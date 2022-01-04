@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
 
+
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +24,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'owm&etjy6s(ed!kkx70e@ouyo@$gpmn8d59jmz$j(cn69ms@*w'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = "userApp.User"
 
@@ -91,9 +95,9 @@ WSGI_APPLICATION = 'BankLoans.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'LoansDatabase',
-        'USER': 'omneya',
-        'PASSWORD': 'Omnikiro1',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
         'HOST': '',
         'PORT': '',
     }
@@ -143,3 +147,5 @@ CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = (
 #   'http://localhost:8080',
 # )
+import django_heroku
+django_heroku.settings(locals())
